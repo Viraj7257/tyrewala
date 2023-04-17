@@ -1,0 +1,94 @@
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+@app.route('/sell', methods=['GET', 'POST'])
+def sell():
+    if request.method == 'POST':
+        # Process the form submission
+        name = request.form['name']
+        email = request.form['email']
+        phone = request.form['phone']
+        tyre_brand = request.form['tyre_brand']
+        tyre_size = request.form['tyre_size']
+        return f'Thank you, {name}, for submitting your request to sell {tyre_brand} tyres of size {tyre_size}. We will contact you soon at {email} or {phone}.'
+    else:
+        return render_template('sell.html')
+
+@app.route('/privacy')
+def privacy():
+    return render_template('privacy.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
+    
+# HTML templates
+
+@app.route('/templates/home.html')
+def home():
+    return """
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tyrewala - Home</title>
+  </head>
+  <body>
+    <h1>Welcome to Tyrewala!</h1>
+    <p>We are a reseller of old tyres. Use our website to sell your old tyres and earn some money.</p>
+    <p><a href="/sell">Sell your old tyres</a></p>
+    <p><a href="/privacy">Privacy Policy</a></p>
+    <p><a href="/about">About Us</a></p>
+  </body>
+</html>
+"""
+
+@app.route('/templates/sell.html')
+def sell():
+    return """
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tyrewala - Sell Your Old Tyres</title>
+  </head>
+  <body>
+    <h1>Sell Your Old Tyres</h1>
+    <p>Please provide us with some information about your old tyres:</p>
+    <form action="/sell" method="POST">
+      <label for="name">Your Name:</label>
+      <input type="text" id="name" name="name" required><br>
+      <label for="email">Your Email:</label>
+      <input type="email" id="email" name="email" required><br>
+      <label for="phone">Your Phone:</label>
+      <input type="tel" id="phone" name="phone" required><br>
+      <label for="tyre_brand">Tyre Brand:</label>
+      <input type="text" id="tyre_brand" name="tyre_brand" required><br>
+      <label for="tyre_size">Tyre Size:</label>
+      <input type="text" id="tyre_size" name="tyre_size" required><br>
+      <input type="submit" value="Submit">
+    </form>
+    <p><a href="/">Back to Home</a></p>
+    <p><a href="/privacy">Privacy Policy</a></p>
+    <p><a href="/about">About Us</a></p>
+  </body>
+</html>
+"""
+
+@app.route('/templates/privacy.html')
+def privacy():
+    return """
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tyrewala - Privacy Policy</title>
+  </head>
+  <body>
+    <h1>Privacy Policy</h1>
+    <p>We take your privacy seriously
